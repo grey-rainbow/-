@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>交易客户端</title>
+
     <link rel="stylesheet" href={{url_for('modules', filename='bootstrap.min.css')}}>
     <script src={{url_for('modules', filename='jquery-3.1.1.min.js')}}></script>
     <script src={{url_for('modules', filename='bootstrap.min.js')}}></script>
@@ -16,8 +17,11 @@
             setTimeout(time, 1000);
         }
     </script>
-
+    <script src={{url_for('public', filename="js/trade_js/trade.js")}}></script>
+    <script src={{url_for('public', filename="js/trade_js/util.js")}}></script>
     <link rel="stylesheet" href={{url_for('public', filename='css/index.css')}}>
+    <link rel="stylesheet" type="text/css" href={{url_for('public', filename="css/trade.css")}}>
+
 </head>
 <body onload="time()">
 <div class="wrapper">
@@ -95,8 +99,12 @@
         </nav>
 
         <div id="client-main">
-            <p>功能模块插到client-main下整个使用浮动布局，写之前请了解一下</p>
-         <p>服务器入口在app.py，第一次用python写服务器，如果不符合规范，请见谅</p>
+            <div id="msg_slot" class="msg">
+
+            </div>
+            <div id="all_transactions">
+                
+            </div>            
         </div>
 
     </div>
@@ -111,5 +119,38 @@
         });
     });
 </script>
+
+<script>
+    $(document).ready(function(){
+        load_transactions();
+        check_confirm_cancel();
+    })
+</script>
+<div class="modal fade" id="confirm_cancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">撤销交易确认</h4>
+            </div>
+            <form class="form-horizontal" id="confirm_form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            资金密码
+                        </label>
+                        <div class="col-sm-6">
+                            <input class="form-control" id="fund_psd" name="fund_psd" type="password">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <input id="cofirmbtn" type="submit" class="btn btn-default" value="确认">
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 </body>
 </html>
