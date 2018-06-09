@@ -179,7 +179,7 @@ function load_transactions(){
 }
 
 function create_trade_cell(id, item){
-    var tmp = "<div class='trade-cell'><table class='table' id='{}'>".replace("{}", id);
+    var tmp = "<div class='trade-cell col-sm-5 text-center'><table class='table' id='{}'>".replace("{}", id);
     var date = new Date(item.timestamp);
     formated_date = date.getFullYear()+"年"+(date.getMonth()+1)+"月"+date.getDate()
         +"日"+date.getHours()+"时"+date.getMinutes()+"分"+date.getSeconds()+"秒";
@@ -213,7 +213,7 @@ function render_transaction(data){
     for (var key in data.data){
         target.append(create_trade_cell(key, data.data[key]));
     }
-    $("[name='cancel_tran'").each(function(){
+    $("[name='cancel_tran']").each(function(){
         $(this).click(function(){
             cancel_transaction($(this).parent().prev().attr("id"));
         });

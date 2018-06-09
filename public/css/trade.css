@@ -21,12 +21,9 @@
 
 .trade-cell{
 	margin: 15px 10px 15px 10px;
-	width: 320px;
-	height: 285px;
 	padding: 15px 15px 15px 15px;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 	background: #fff;
-	float: left;
 }
 
 .cell-button{
@@ -47,4 +44,15 @@
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 	background: #fff;
 	width: 1070px;
+}
+
+.card-sty{
+	margin: 10px 10px 10px 10px;
+	padding: 15px 15px 15px 15px;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+	background: #fff;
+}
+
+.all-trans{
+	margin-left: 5%;
 }
