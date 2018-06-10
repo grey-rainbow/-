@@ -42,17 +42,17 @@
             <li class="active">
                 <a href="#accountSubmenu" data-toggle="collapse" aria-expanded="true" class="">账户查询</a>
                 <ul class="list-unstyled collapse in" id="accountSubmenu" aria-expanded="true" style="">
-                    <li><a href="#">证券账户查询</a></li>
-                    <li><a href="#">资金账户查询</a></li>
+                    <li><a href="stock_info">证券账户查询</a></li>
+                    <li><a href="fund_info">资金账户查询</a></li>
                 </ul>
             </li>
             <li>
-                <a href="/stock_query">股票查询</a>
+                <a href="stock_query">股票查询</a>
                 <a href="#transactionSubmenu" data-toggle="collapse" aria-expanded="true" class="">发起交易</a>
                 <ul class="list-unstyled collapse in" id="transactionSubmenu" aria-expanded="true" style="">
-                    <li><a href="/buy">购买股票</a></li>
-                    <li><a href="/sell">出售股票</a></li>
-                    <li><a href="/cancel">撤销指令</a></li>
+                    <li><a href={{url_for('buy')}}>购买股票</a></li>
+                    <li><a href={{url_for('sell')}}>出售股票</a></li>
+                    <li><a href={{url_for('cancel')}}>撤销指令</a></li>
                 </ul>
             </li>
             <li>

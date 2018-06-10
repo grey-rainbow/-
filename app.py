@@ -63,6 +63,16 @@ def change_password():
     return render_template("change_password.html")
 
 
+@app.route("/stock_info")
+def stock_info():
+    return render_template("stock_info.html")
+
+
+@app.route("/fund_info")
+def fund_info():
+    return render_template("fund_info.html")
+
+
 #for test
 
 

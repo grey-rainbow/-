@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>交易客户端</title>
+
     <link rel="stylesheet" href={{url_for('modules', filename='bootstrap.min.css')}}>
     <script src={{url_for('modules', filename='jquery-3.1.1.min.js')}}></script>
     <script src={{url_for('modules', filename='bootstrap.min.js')}}></script>
@@ -16,8 +17,15 @@
             setTimeout(time, 1000);
         }
     </script>
+    <script>
+        $(document).ready(function(){
+            render_stock_info()
+        });
+    </script>
 
     <link rel="stylesheet" href={{url_for('public', filename='css/index.css')}}>
+<!---    <link rel="stylesheet" type="text/css" href={{url_for('public', filename="trade.css")}}>-->
+
 </head>
 <body onload="time()">
 <div class="wrapper">
@@ -31,7 +39,7 @@
             <li class="active">
                 <a href="#accountSubmenu" data-toggle="collapse" aria-expanded="true" class="">账户查询</a>
                 <ul class="list-unstyled collapse in" id="accountSubmenu" aria-expanded="true" style="">
-                    <li><a href="stock_info">证券账户查询</a></li>
+                    <li><a href="#">证券账户查询</a></li>
                     <li><a href="fund_info">资金账户查询</a></li>
                 </ul>
             </li>
@@ -95,12 +103,33 @@
         </nav>
 
         <div id="client-main">
-            <p>功能模块插到client-main下整个使用浮动布局，写之前请了解一下</p>
-         <p>服务器入口在app.py，第一次用python写服务器，如果不符合规范，请见谅</p>
+            <div class="msg" id="msg_slot">
+
+            </div>
+
+            <!--这是股票信息加载的内容-->
+            <div class="stock-info" id="stock_info">
+                <div style="font-size:20px">
+            <span class="glyphicon glyphicon-user"></span>账户资金信息
         </div>
+        <table class="table">
+            <tr><td><label>股票名称：</label></td><td><strong>my stock</strong></td><tr>
+            <tr><td><label>持有数量：</label></td><td><strong>100</strong></td><tr>
+            <tr><td><label>当前价格：</label></td><td><strong>2.0    $</strong></td><tr>
+            <tr><td><label>每股持有成本：</label></td><td><strong>1.0  $</strong></td><tr>
+            <tr><td><label>每股持有损益：</label></td><td><strong>1.0  $</strong></td><tr>
+            <tr><td></td><td></td></tr>
+        <table>
+        <p>资金显示并非实时刷新。</p>
 
+            </div>
+
+            <!--<div class="account-info" id="account_info">-->
+
+            <!--</div>-->
+
+        </div>
     </div>
-
 </div>
 
 <script>

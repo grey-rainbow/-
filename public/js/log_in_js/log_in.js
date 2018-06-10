@@ -47,7 +47,7 @@ function log() {
         }
         */
     }
-    
+
 }
 
 function  change() {
