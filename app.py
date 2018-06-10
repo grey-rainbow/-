@@ -38,6 +38,10 @@ def info():
     return render_template("info.html")
 
 
+@app.route('/log_in')
+def log_in():
+    return render_template("log_in.html")
+
 
 @app.route("/buy")
 def buy():
@@ -54,6 +58,14 @@ def cancel():
     return render_template("cancel.html")
 
 
+@app.route("/change_password")
+def change_password():
+    return render_template("change_password.html")
+
+
+#for test
+
+
 @app.route("/trade_shares", methods=["POST"])
 def trade():
     data = request.form.to_dict()
@@ -64,11 +76,68 @@ def trade():
     })
 
 
+@app.route("/stock_query", methods = ['GET', 'POST'])
+def stock_query():
+    return render_template("stock_query.html")
+
+
 @app.route("/account_user_login", methods=["POST"])
 def fund_acc():
     return jsonify({
         "state" : True
     })
+
+
+@app.route("/stock", methods=["POST","GET"])
+def stock():
+    method = request.form["method"]
+    info = request.form["info"]
+    print(method)
+    print(info)
+    if info =="1234":
+        return jsonify({
+            "stock_price":{
+                "current_price": 11.1, #//实时价格
+                "latest_price": 10, #//最新成交价格
+                "buy_highest_price": 12,  #//当前购买指令的最高价格
+                "sale_lowest_price": 4, #//当前出售的最低价格
+                "today_price": { #//当日最高，最低成交价格
+                    "highest_price":12,
+                    "lowest_price":6,
+                },
+                "week_price": { #//本周最高，最低成交价格
+                    "highest_price":13,
+                    "lowest_price":4,
+                },
+                "month_price": { #//本月最高，最低成交价格
+                    "highest_price":21,
+                    "lowest_price":1,
+                },
+                "stock_info": "！！！明天股票大涨！！！" #//股票的重要公告
+            }
+        })
+    if info =="ZJU":
+        return jsonify({
+            "stock_price":{
+                "current_price": 666, #实时价格
+                "latest_price": 666, #最新成交价格
+                "buy_highest_price": 666,  #//当前购买指令的最高价格
+                "sale_lowest_price": 666, #//当前出售的最低价格
+                "today_price": { #//当日最高，最低成交价格
+                    "highest_price":666,
+                    "lowest_price":666,
+                },
+                "week_price": { #//本周最高，最低成交价格
+                    "highest_price":666,
+                    "lowest_price":666,
+                },
+                "month_price": { #//本月最高，最低成交价格
+                    "highest_price":666,
+                    "lowest_price":666,
+                },
+                "stock_info": "！！！明天股票大涨！！！" #//股票的重要公告
+            }
+        })
 
 
 @app.route("/all_transaction")
@@ -105,6 +174,31 @@ def all():
                 "price" : 5.12,
                 "order_type" : 1
             }
+        }
+    })
+
+
+@app.route("/test")
+def test():
+    return jsonify({
+        "stock_price":{
+            "current_price": 11.1, #//实时价格
+            "latest_price": 10, #//最新成交价格
+            "buy_highest_price": 12,  #//当前购买指令的最高价格
+            "sale_lowest_price": 4, #//当前出售的最低价格
+            "today_price": { #//当日最高，最低成交价格
+                "highest_price":12,
+                "lowest_price":6,
+            },
+            "week_price": { #//本周最高，最低成交价格
+                "highest_price":13,
+                "lowest_price":4,
+            },
+            "month_price": { #//本月最高，最低成交价格
+                "highest_price":21,
+                "lowest_price":1,
+            },
+            "stock_info": "Test" #//股票的重要公告
         }
     })
 
