@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>交易客户端</title>
+
+    <link rel="stylesheet" href={{url_for('modules', filename='bootstrap.min.css')}}>
+    <script src={{url_for('modules', filename='jquery-3.1.1.min.js')}}></script>
+    <script src={{url_for('modules', filename='bootstrap.min.js')}}></script>
+    <script src={{url_for('modules', filename='jquery.validate.min.js')}}></script>
+
+    <script>
+        function time() {
+            let time_div = document.getElementById('showtime');
+            let now = new Date();
+            time_div.innerHTML = now.getFullYear()+"年"+(now.getMonth()+1)+"月"+now.getDate()+"日"+now.getHours()+"时"+now.getMinutes()+"分"+now.getSeconds()+"秒";
+            setTimeout(time, 1000);
+        }
+    </script>
+
+    <link rel="stylesheet" href={{url_for('public', filename='css/index.css')}}>
+
+    <style>
+        .st{
+            padding: 60px 0px 0px 0px;
+        }
+        td{
+            width:70px;
+            text-align: center;
+            vertical-align: middle!important;
+        }
+
+        .Center-Container {
+            position: relative;
+        }
+
+        .Absolute-Center {
+            width: 50%;
+            height: 50%;
+            margin: auto;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+        }
+
+    </style>
+
+</head>
+<body onload="time()">
+<div class="wrapper">
+    <nav id="sidebar" class="">
+        <div class="sidebar-header">
+            <h3>功能区</h3>
+        </div>
+
+        <ul class="list-unstyled components">
+            <p>选择功能</p>
+            <li class="active">
+                <a href="#accountSubmenu" data-toggle="collapse" aria-expanded="true" class="">账户查询</a>
+                <ul class="list-unstyled collapse in" id="accountSubmenu" aria-expanded="true" style="">
+                    <li><a href="#">证券账户查询</a></li>
+                    <li><a href="#">资金账户查询</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="/stock_query">股票查询</a>
+                <a href="#transactionSubmenu" data-toggle="collapse" aria-expanded="true" class="">发起交易</a>
+                <ul class="list-unstyled collapse in" id="transactionSubmenu" aria-expanded="true" style="">
+                    <li><a href="buy">购买股票</a></li>
+                    <li><a href="sell">出售股票</a></li>
+                    <li><a href="cancel">撤销指令</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="info">高级提醒功能</a>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled CTAs">
+            <li><a href="#" class="article">回到网上信息发布系统</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" id="sidebarCollapse" class="navbar-btn">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">主界面</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a id="showtime" href="#"></a></li>
+                        <li><a href="#">交易客户端</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                属性
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">个人信息</a></li>
+                                <li><a href="change_password">修改密码</a></li>
+                                <li><a href="log_in">登出</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </nav>
+        <div class="Center-Container">
+            <div class="Absolute-Center">
+                <div class="form-horizontal">
+                    <form id="query_form">
+                        <div class="col-sm-4">
+                            <select id="query_method" name="query_method" class="form-control">
+                                <option value="code">股票代码</option>
+                                <option value="name">股票名称</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input id="info" name="info" class="form-control" method = "POST">
+                                <span class="input-group-btn">
+                                    <input type="button" id="query_stock" class="btn btn-default" value="查询" onclick="stock_query()">
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="container-fluid" align=“center”>
+                    <div id="stock" class="st">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function stock_query(){
+        var info = document.getElementById("info");
+        var method = document.getElementById("query_method");
+        $.post("/stock", {"method": method.value, "info": info.value}, function(data){
+            render_stock(data.stock_price);         
+        })
+    }
+
+    function render_stock(data){
+        var div = $("#stock");
+        var tmp =`
+    <table class="table">
+        <tr>
+            <td><label>股票最新成交价格</label></td>
+            <td><strong>{1}</strong></td>
+            <td><label></label></td>
+            <td><strong></strong></td>
+        </tr>   
+        <tr>
+            <td><label>当前最高购买价格</label></td>
+            <td><strong>{3}</strong></td>
+            <td><label>当前最低购买价格</label></td>
+            <td><strong>{4}</s
+            trong></td>
+        </tr>
+        <tr>
+            <td><label>本日最高购买价格</label></td>
+            <td><strong>{5}</strong></td>
+            <td><label>本日最低购买价格</label></td>
+            <td><strong>{6}</strong></td>
+        </tr>
+        <tr>
+            <td><label>本周最高购买价格</label></td>
+            <td><strong>{7}</strong></td>
+            <td><label>本周最低购买价格</label></td>
+            <td><strong>{8}</strong></td>
+        </tr>
+        <tr>
+            <td><label>本月最高购买价格</label></td>
+            <td><strong>{9}</strong></td>
+            <td><label>本月最低购买价格</label></td>
+            <td><strong>{10}</strong></td>
+        </tr>
+    <table>
+    <div class="container-fluid">
+        <h2 style="text-align:center">股票重要信息公告</h2>
+        <h3 style="text-align:center">{11}</h3>
+    </div>
+    `.replace("{1}", data.current_price).replace("{3}", data.buy_highest_price).replace("{4}", data.sale_lowest_price).replace("{5}", data.today_price.highest_price).replace("{6}", data.today_price.lowest_price).replace("{7}", data.week_price.highest_price).replace("{8}", data.week_price.lowest_price).replace("{9}", data.month_price.highest_price).replace("{10}", data.month_price.lowest_price).replace("{11}", data.stock_info);
+        div.html(tmp);
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+            $(this).toggleClass('active');
+        });
+    });
+</script>
+</body>
+</html>
