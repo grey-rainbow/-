@@ -104,8 +104,17 @@ def stock():
     info = request.form["info"]
     print(method)
     print(info)
+    if info == "12345":
+        return jsonify({
+                "state": False
+            })
+    if info == "APPLE":
+        return jsonify({
+                "state": False
+            })
     if info =="1234":
         return jsonify({
+            "state" : True,
             "stock_price":{
                 "current_price": 11.1, #//实时价格
                 "latest_price": 10, #//最新成交价格
@@ -128,6 +137,7 @@ def stock():
         })
     if info =="ZJU":
         return jsonify({
+            "state" : True,
             "stock_price":{
                 "current_price": 666, #实时价格
                 "latest_price": 666, #最新成交价格
