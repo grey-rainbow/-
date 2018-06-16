@@ -170,6 +170,7 @@
                     <strong>请输入{}</strong>
                 </div>`.replace("{}", value);
             div.html(tmp);
+            $("#stock").html(``); 
         }
         else{
             $.post("/stock", {"method": method.value, "info": info.value}, function(data){
