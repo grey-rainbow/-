@@ -137,7 +137,9 @@
                                     <input type="button" id="query_stock" class="btn btn-default" value="查询" onclick="stock_query()">
                                 </span>
                             </div>
+                            <div id = "alert"></div>
                         </div>
+
                     </form>
                 </div>
 
@@ -189,53 +191,84 @@
     function stock_query(){
         var info = document.getElementById("info");
         var method = document.getElementById("query_method");
-        $.post("/stock", {"method": method.value, "info": info.value}, function(data){
-            render_stock(data.stock_price);         
-        })
+        if($.trim($("#info").val()).length == 0){ 
+            var div = $("#alert");
+            var value = "";
+            if(method.value == "code"){
+                value = "股票代码";
+            }
+            else{
+                value = "股票名称";
+            }
+            var tmp = `<div class="alert alert-warning">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>请输入{}</strong>
+                </div>`.replace("{}", value);
+            div.html(tmp);
+            $("#stock").html(``); 
+        }
+        else{
+            $.post("/stock", {"method": method.value, "info": info.value}, function(data){
+                if(data.state == true)
+                    render_stock(data.stock_price);
+                else{
+                    var div = $("#alert");
+                    var tmp = `<div class="alert alert-warning">
+                            <a href="#" class="close" data-dismiss="alert">
+                                &times;
+                            </a>
+                            <strong>该股票不存在，请重新输入</strong>
+                        </div>`
+                    div.html(tmp);
+                    $("#stock").html(``);                   
+                }
+            })            
+        }
     }
 
     function render_stock(data){
         var div = $("#stock");
         var tmp =`
-    <table class="table">
-        <tr>
-            <td><label>股票最新成交价格</label></td>
-            <td><strong>{1}</strong></td>
-            <td><label></label></td>
-            <td><strong></strong></td>
-        </tr>   
-        <tr>
-            <td><label>当前最高购买价格</label></td>
-            <td><strong>{3}</strong></td>
-            <td><label>当前最低购买价格</label></td>
-            <td><strong>{4}</s
-            trong></td>
-        </tr>
-        <tr>
-            <td><label>本日最高购买价格</label></td>
-            <td><strong>{5}</strong></td>
-            <td><label>本日最低购买价格</label></td>
-            <td><strong>{6}</strong></td>
-        </tr>
-        <tr>
-            <td><label>本周最高购买价格</label></td>
-            <td><strong>{7}</strong></td>
-            <td><label>本周最低购买价格</label></td>
-            <td><strong>{8}</strong></td>
-        </tr>
-        <tr>
-            <td><label>本月最高购买价格</label></td>
-            <td><strong>{9}</strong></td>
-            <td><label>本月最低购买价格</label></td>
-            <td><strong>{10}</strong></td>
-        </tr>
-    <table>
-    <div class="container-fluid">
-        <h2 style="text-align:center">股票重要信息公告</h2>
-        <h3 style="text-align:center">{11}</h3>
-    </div>
-    `.replace("{1}", data.current_price).replace("{3}", data.buy_highest_price).replace("{4}", data.sale_lowest_price).replace("{5}", data.today_price.highest_price).replace("{6}", data.today_price.lowest_price).replace("{7}", data.week_price.highest_price).replace("{8}", data.week_price.lowest_price).replace("{9}", data.month_price.highest_price).replace("{10}", data.month_price.lowest_price).replace("{11}", data.stock_info);
+            <table class="table">
+                <tr>
+                    <td><label>股票最新成交价格</label></td>
+                    <td><strong>{1}</strong></td>
+                    <td><label></label></td>
+                    <td><strong></strong></td>
+                </tr>   
+                <tr>
+                    <td><label>当前最高购买价格</label></td>
+                    <td><strong>{3}</strong></td>
+                    <td><label>当前最低购买价格</label></td>
+                    <td><strong>{4}</s
+                    trong></td>
+                </tr>
+                <tr>
+                    <td><label>本日最高购买价格</label></td>
+                    <td><strong>{5}</strong></td>
+                    <td><label>本日最低购买价格</label></td>
+                    <td><strong>{6}</strong></td>
+                </tr>
+                <tr>
+                    <td><label>本周最高购买价格</label></td>
+                    <td><strong>{7}</strong></td>
+                    <td><label>本周最低购买价格</label></td>
+                    <td><strong>{8}</strong></td>
+                </tr>
+                <tr>
+                    <td><label>本月最高购买价格</label></td>
+                    <td><strong>{9}</strong></td>
+                    <td><label>本月最低购买价格</label></td>
+                    <td><strong>{10}</strong></td>
+                </tr>
+            <table>
+            <div class="container-fluid">
+                <h2 style="text-align:center">股票重要信息公告</h2>
+                <h3 style="text-align:center">{11}</h3>
+            </div>
+            `.replace("{1}", data.current_price).replace("{3}", data.buy_highest_price).replace("{4}", data.sale_lowest_price).replace("{5}", data.today_price.highest_price).replace("{6}", data.today_price.lowest_price).replace("{7}", data.week_price.highest_price).replace("{8}", data.week_price.lowest_price).replace("{9}", data.month_price.highest_price).replace("{10}", data.month_price.lowest_price).replace("{11}", data.stock_info);
         div.html(tmp);
+        $("#alert").html(``);
     }
 </script>
 <script>
