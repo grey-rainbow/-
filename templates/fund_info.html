@@ -7,6 +7,8 @@
     <script src={{url_for('modules', filename='jquery-3.1.1.min.js')}}></script>
     <script src={{url_for('modules', filename='bootstrap.min.js')}}></script>
     <script src={{url_for('modules', filename='jquery.validate.min.js')}}></script>
+    <script src={{ url_for('modules', filename='js-cookie.js') }}></script>
+    <script src={{ url_for('public', filename='js/info_js/info.js') }}></script>
 
     <script>
         function time() {
@@ -127,13 +129,50 @@
     </div>
 </div>
 
+<!--info-->
+<div class="modal fade" id="infoModalPopovers" tabindex="-1" role="dialog" aria-labelledby="infoModalLongTitle"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="infoModalPopoversLabel">股票交易提醒</h4>
+            </div>
+            <div class="modal-body">
+                <h5>详细信息显示</h5>
+                <p>股票代码
+                    <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers"
+                       id="infoModalPopovers_stock_id">
+
+                    </a>
+                    达到设定
+                    <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers"
+                       id="infoModalPopovers_stock_price">
+
+                    </a> 价格</p>
+                <hr>
+                <h5>前往交易</h5>
+                <p>前往 <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers">股票交易系统</a>
+                    发起交易 或 前往 <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers">网上信息发布系统</a>
+                    查看详细信息</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     $(document).ready(function () {
         $('#sidebarCollapse').on('click', function () {
             $('#sidebar').toggleClass('active');
             $(this).toggleClass('active');
         });
+        let advance_info = new Info();
+        advance_info.interval_check();
     });
+
 </script>
 </body>
 </html>
