@@ -8,6 +8,8 @@
     <script src={{url_for('modules', filename='jquery-3.1.1.min.js')}}></script>
     <script src={{url_for('modules', filename='bootstrap.min.js')}}></script>
     <script src={{url_for('modules', filename='jquery.validate.min.js')}}></script>
+    <script src={{url_for('modules', filename='js-cookie.js')}}></script>
+    <script src={{ url_for('public', filename='js/info_js/info.js') }}></script>
 
     <script>
         function time() {
@@ -173,7 +175,7 @@
 
 <script>
 
-    let check_list = [];
+    let advance_info = new Info();
 
     let info_type;
 
@@ -194,13 +196,15 @@
     let add_info = function () {
         let stock_id = $('#add_info input')[0].value;
         let stock_price = $('#add_info input')[1].value;
-        if (check_list.findIndex(element => JSON.stringify(element) === JSON.stringify({stock_id, stock_price, info_type})) < 0) {
-            check_list.push({stock_id, stock_price, info_type});
+        if (advance_info.check_list.findIndex(element => JSON.stringify(element) === JSON.stringify({stock_id, stock_price, info_type})) < 0) {
+            advance_info.check_list.push({stock_id, stock_price, info_type});
+            Info.set_localStorage("check_list", advance_info.check_list);
 
             let new_node = document.createElement('div');
             new_node.setAttribute('class', 'row');
             new_node.setAttribute('id', `${stock_id}`);
             new_node.innerHTML = `<div class="col-lg-4 col-lg-offset-1 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_id">股票代码</span><input type="text" class="form-control" disabled placeholder=${stock_id}></div></div><div class="col-lg-4 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_price">提醒价格</span><input type="text" class="form-control" disabled placeholder=${stock_price}><span class="input-group-addon" id="info_stock_type">${info_type === 1 ? "高于价格提醒" : "低于价格提醒"}</span></div></div><div class="col-lg-1"><button type="button" class="btn btn-default" onclick="delete_info(event.target)">撤销提醒</button></div>`;
+
             $('#show_info')[0].appendChild(new_node);
 
         }
@@ -209,55 +213,31 @@
     let delete_info = function (e) {
         let delete_element = e.parentNode.parentNode;
         let stock_id = delete_element.getAttribute('id');
-        check_list = check_list.filter(x => x.stock_id !== stock_id);
+
+        advance_info.check_list = advance_info.check_list.filter(x => x.stock_id !== stock_id);
+        Info.set_localStorage("check_list", advance_info.check_list);
+
         e.parentNode.parentNode.remove();
     };
 
-    let check_price = function(stock) {
+    let pre_info = function() {
+        Info.get_localStorage("check_list").map((stock) => {
+            let new_node = document.createElement('div');
+            new_node.setAttribute('class', 'row');
+            new_node.setAttribute('id', `${stock.stock_id}`);
+            new_node.innerHTML = `<div class="col-lg-4 col-lg-offset-1 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_id">股票代码</span><input type="text" class="form-control" disabled placeholder=${stock.stock_id}></div></div><div class="col-lg-4 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_price">提醒价格</span><input type="text" class="form-control" disabled placeholder=${stock.stock_price}><span class="input-group-addon" id="info_stock_type">${info_type === 1 ? "高于价格提醒" : "低于价格提醒"}</span></div></div><div class="col-lg-1"><button type="button" class="btn btn-default" onclick="delete_info(event.target)">撤销提醒</button></div>`;
 
-        fetch('/stock', {
-            body: JSON.stringify({code: stock.id}),
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'content-type': 'application/json'
-            },
-            method: 'POST',
-            redirect: 'follow',
-            referrer: 'no-referrer'
+            $('#show_info')[0].appendChild(new_node);
         })
-            .then(response => response.json())
-            .then(res => {
-                return Number(res.current_price) * Number(stock.info_type) > Number(stock.stock_price) * Number(stock.info_type);
-            })
-            .catch(err => {
-                console.log(err);
-            })
     };
-
-    let show_info = function(stock) {
-        $("#infoModalPopovers_stock_id")[0].innerText = stock.stock_id;
-        $("#infoModalPopovers_stock_price")[0].innerText = stock.stock_price;
-        $("#infoModalPopovers").modal('show');
-    };
-
-    function interval_check() {
-        check_list.map(stock => {
-            if (check_price(stock))
-                show_info(stock);
-        })
-    }
 
     $(document).ready(function () {
         $('#sidebarCollapse').on('click', function () {
             $('#sidebar').toggleClass('active');
             $(this).toggleClass('active');
         });
-    });
-
-    $(document).ready(function () {
-        //setInterval(check_list, 10000);
-        //setInterval(show_info, 10000);
+        pre_info();
+        advance_info.interval_check();
     });
 
 </script>
