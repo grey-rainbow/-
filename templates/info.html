@@ -158,7 +158,10 @@
                     <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers" id="infoModalPopovers_stock_id">
 
                     </a>
-                     达到设定
+                    <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers" id="infoModalPopovers_info_type">
+
+                    </a>
+                    设定
                     <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers" id="infoModalPopovers_stock_price">
 
                     </a> 价格</p>
@@ -167,6 +170,7 @@
                 <p>前往 <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers">股票交易系统</a> 发起交易 或 前往 <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers">网上信息发布系统</a> 查看详细信息</p>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="advance_info.stop_info()">不再提醒</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -202,7 +206,7 @@
 
             let new_node = document.createElement('div');
             new_node.setAttribute('class', 'row');
-            new_node.setAttribute('id', `${stock_id}`);
+            new_node.setAttribute('id', `${stock_id}_${stock_price}_${info_type}`);
             new_node.innerHTML = `<div class="col-lg-4 col-lg-offset-1 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_id">股票代码</span><input type="text" class="form-control" disabled placeholder=${stock_id}></div></div><div class="col-lg-4 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_price">提醒价格</span><input type="text" class="form-control" disabled placeholder=${stock_price}><span class="input-group-addon" id="info_stock_type">${info_type === 1 ? "高于价格提醒" : "低于价格提醒"}</span></div></div><div class="col-lg-1"><button type="button" class="btn btn-default" onclick="delete_info(event.target)">撤销提醒</button></div>`;
 
             $('#show_info')[0].appendChild(new_node);
@@ -212,9 +216,10 @@
     //delete
     let delete_info = function (e) {
         let delete_element = e.parentNode.parentNode;
-        let stock_id = delete_element.getAttribute('id');
+        let stock = delete_element.getAttribute('id').split("_");
 
-        advance_info.check_list = advance_info.check_list.filter(x => x.stock_id !== stock_id);
+        advance_info.check_list = advance_info.check_list.filter(x =>
+            ! (x.stock_id === stock[0] && x.stock_price === stock[1] && x.info_type === stock[2]));
         Info.set_localStorage("check_list", advance_info.check_list);
 
         e.parentNode.parentNode.remove();
@@ -224,7 +229,7 @@
         Info.get_localStorage("check_list").map((stock) => {
             let new_node = document.createElement('div');
             new_node.setAttribute('class', 'row');
-            new_node.setAttribute('id', `${stock.stock_id}`);
+            new_node.setAttribute('id', `${stock.stock_id}_${stock.stock_price}_${stock.info_type}`);
             new_node.innerHTML = `<div class="col-lg-4 col-lg-offset-1 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_id">股票代码</span><input type="text" class="form-control" disabled placeholder=${stock.stock_id}></div></div><div class="col-lg-4 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_price">提醒价格</span><input type="text" class="form-control" disabled placeholder=${stock.stock_price}><span class="input-group-addon" id="info_stock_type">${info_type === 1 ? "高于价格提醒" : "低于价格提醒"}</span></div></div><div class="col-lg-1"><button type="button" class="btn btn-default" onclick="delete_info(event.target)">撤销提醒</button></div>`;
 
             $('#show_info')[0].appendChild(new_node);

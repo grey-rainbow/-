@@ -8,11 +8,8 @@ class Info {
     interval_check() {
         setInterval(
             () => this.check_list.map(stock => {
-            if (Info.check_price(stock))
-                Info.show_info(stock);
+            Info.check_price(stock);
         }), 20000);
-
-        console.log(advance_info.check_list);
     }
 
     static get_localStorage(name) {
@@ -43,17 +40,27 @@ class Info {
         })
             .then(response => response.json())
             .then(res => {
-                return Number(res.current_price) * Number(stock.info_type) > Number(stock.stock_price) * Number(stock.info_type);
+                if(Number(res.stock_price.current_price) * Number(stock.info_type) > Number(stock.stock_price) * Number(stock.info_type)) {
+                    this.show_info(stock);
+                }
             })
             .catch(err => {
                 console.log(err);
             })
     }
-
     static show_info(stock) {
         $("#infoModalPopovers_stock_id")[0].innerText = stock.stock_id;
         $("#infoModalPopovers_stock_price")[0].innerText = stock.stock_price;
+        $("#infoModalPopovers_info_type")[0].innerText = stock.info_type > 0 ? "高于" : "低于";
         $("#infoModalPopovers").modal('show');
     };
 
+    stop_info() {
+        let stock_id = $("#infoModalPopovers_stock_id")[0].innerText;
+        let stock_price = $("#infoModalPopovers_stock_price")[0].innerText;
+        let info_type =  $("#infoModalPopovers_info_type")[0].innerText === "高于" ? 1 : -1;
+        this.check_list = this.check_list.filter(x =>
+            ! (x.stock_id === stock_id && x.stock_price === stock_price && x.info_type === info_type));
+        Info.set_localStorage("check_list", this.check_list);
+    }
 }

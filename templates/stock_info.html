@@ -135,8 +135,7 @@
 </div>
 
 <!--info-->
-<div class="modal fade" id="infoModalPopovers" tabindex="-1" role="dialog" aria-labelledby="infoModalLongTitle"
-     aria-hidden="true">
+<div class="modal fade" id="infoModalPopovers" tabindex="-1" role="dialog" aria-labelledby="infoModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -145,22 +144,22 @@
             <div class="modal-body">
                 <h5>详细信息显示</h5>
                 <p>股票代码
-                    <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers"
-                       id="infoModalPopovers_stock_id">
+                    <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers" id="infoModalPopovers_stock_id">
 
                     </a>
-                    达到设定
-                    <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers"
-                       id="infoModalPopovers_stock_price">
+                    <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers" id="infoModalPopovers_info_type">
+
+                    </a>
+                    设定
+                    <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers" id="infoModalPopovers_stock_price">
 
                     </a> 价格</p>
                 <hr>
                 <h5>前往交易</h5>
-                <p>前往 <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers">股票交易系统</a>
-                    发起交易 或 前往 <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers">网上信息发布系统</a>
-                    查看详细信息</p>
+                <p>前往 <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers">股票交易系统</a> 发起交易 或 前往 <a href="#" role="button" class="btn btn-secondary" data-container="#infoModalPopovers">网上信息发布系统</a> 查看详细信息</p>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="advance_info.stop_info()">不再提醒</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>

@@ -73,7 +73,7 @@ def fund_info():
     return render_template("fund_info.html")
 
 
-#for test
+# for test
 
 
 @app.route("/trade_shares", methods=["POST"])
@@ -81,12 +81,12 @@ def trade():
     data = request.form.to_dict()
     print(data)
     return jsonify({
-        "state":True,
-        "transaction_id":"test_transaction_id"
+        "state": True,
+        "transaction_id": "test_transaction_id"
     })
 
 
-@app.route("/stock_query", methods = ['GET', 'POST'])
+@app.route("/stock_query", methods=['GET', 'POST'])
 def stock_query():
     return render_template("stock_query.html")
 
@@ -94,58 +94,60 @@ def stock_query():
 @app.route("/account_user_login", methods=["POST"])
 def fund_acc():
     return jsonify({
-        "state" : True
+        "state": True
     })
 
 
-@app.route("/stock", methods=["POST","GET"])
+@app.route("/stock", methods=["POST", "GET"])
 def stock():
-    method = request.form["method"]
-    info = request.form["info"]
-    print(method)
+    # method = request.form["method"]
+    info = request.json["code"]
+    # print(method)
     print(info)
-    if info =="1234":
+    if info == "1234":
         return jsonify({
-            "stock_price":{
-                "current_price": 11.1, #//实时价格
-                "latest_price": 10, #//最新成交价格
-                "buy_highest_price": 12,  #//当前购买指令的最高价格
-                "sale_lowest_price": 4, #//当前出售的最低价格
-                "today_price": { #//当日最高，最低成交价格
-                    "highest_price":12,
-                    "lowest_price":6,
+            "state": "true",
+            "stock_price": {
+                "current_price": 11.1,  # //实时价格
+                "latest_price": 10,  # //最新成交价格
+                "buy_highest_price": 12,  # //当前购买指令的最高价格
+                "sale_lowest_price": 4,  # //当前出售的最低价格
+                "today_price": {  # //当日最高，最低成交价格
+                    "highest_price": 12,
+                    "lowest_price": 6,
                 },
-                "week_price": { #//本周最高，最低成交价格
-                    "highest_price":13,
-                    "lowest_price":4,
+                "week_price": {  # //本周最高，最低成交价格
+                    "highest_price": 13,
+                    "lowest_price": 4,
                 },
-                "month_price": { #//本月最高，最低成交价格
-                    "highest_price":21,
-                    "lowest_price":1,
+                "month_price": {  # //本月最高，最低成交价格
+                    "highest_price": 21,
+                    "lowest_price": 1,
                 },
-                "stock_info": "！！！明天股票大涨！！！" #//股票的重要公告
+                "stock_info": "！！！明天股票大涨！！！"  # //股票的重要公告
             }
         })
-    if info =="ZJU":
+    if info == "ZJU":
         return jsonify({
-            "stock_price":{
-                "current_price": 666, #实时价格
-                "latest_price": 666, #最新成交价格
-                "buy_highest_price": 666,  #//当前购买指令的最高价格
-                "sale_lowest_price": 666, #//当前出售的最低价格
-                "today_price": { #//当日最高，最低成交价格
-                    "highest_price":666,
-                    "lowest_price":666,
+            "state": "true",
+            "stock_price": {
+                "current_price": 666,  # 实时价格
+                "latest_price": 666,  # 最新成交价格
+                "buy_highest_price": 666,  # //当前购买指令的最高价格
+                "sale_lowest_price": 666,  # //当前出售的最低价格
+                "today_price": {  # //当日最高，最低成交价格
+                    "highest_price": 666,
+                    "lowest_price": 666,
                 },
-                "week_price": { #//本周最高，最低成交价格
-                    "highest_price":666,
-                    "lowest_price":666,
+                "week_price": {  # //本周最高，最低成交价格
+                    "highest_price": 666,
+                    "lowest_price": 666,
                 },
-                "month_price": { #//本月最高，最低成交价格
-                    "highest_price":666,
-                    "lowest_price":666,
+                "month_price": {  # //本月最高，最低成交价格
+                    "highest_price": 666,
+                    "lowest_price": 666,
                 },
-                "stock_info": "！！！明天股票大涨！！！" #//股票的重要公告
+                "stock_info": "！！！明天股票大涨！！！"  # //股票的重要公告
             }
         })
 
@@ -153,36 +155,36 @@ def stock():
 @app.route("/all_transaction")
 def all():
     return jsonify({
-        "state" : True,
-        "message":"",
-        "data":{
-            "test_tran_id_1":{
-                "timestamp" : round(time.time()*1000),
-                "stock_id" : "testid123",
-                "volume":1234,
-                "price" : 5.12,
-                "order_type" : 1
+        "state": True,
+        "message": "",
+        "data": {
+            "test_tran_id_1": {
+                "timestamp": round(time.time() * 1000),
+                "stock_id": "testid123",
+                "volume": 1234,
+                "price": 5.12,
+                "order_type": 1
             },
-            "test_tran_id_2":{
-                "timestamp" : round(time.time()*1000),
-                "stock_id" : "testid123",
-                "volume":1234,
-                "price" : 5.12,
-                "order_type" : 1
+            "test_tran_id_2": {
+                "timestamp": round(time.time() * 1000),
+                "stock_id": "testid123",
+                "volume": 1234,
+                "price": 5.12,
+                "order_type": 1
             },
-            "test_tran_id_3":{
-                "timestamp" : round(time.time()*1000),
-                "stock_id" : "testid123",
-                "volume":1234,
-                "price" : 5.12,
-                "order_type" : 1
+            "test_tran_id_3": {
+                "timestamp": round(time.time() * 1000),
+                "stock_id": "testid123",
+                "volume": 1234,
+                "price": 5.12,
+                "order_type": 1
             },
-            "test_tran_id_4":{
-                "timestamp" : round(time.time()*1000),
-                "stock_id" : "testid123",
-                "volume":1234,
-                "price" : 5.12,
-                "order_type" : 1
+            "test_tran_id_4": {
+                "timestamp": round(time.time() * 1000),
+                "stock_id": "testid123",
+                "volume": 1234,
+                "price": 5.12,
+                "order_type": 1
             }
         }
     })
@@ -191,24 +193,24 @@ def all():
 @app.route("/test")
 def test():
     return jsonify({
-        "stock_price":{
-            "current_price": 11.1, #//实时价格
-            "latest_price": 10, #//最新成交价格
-            "buy_highest_price": 12,  #//当前购买指令的最高价格
-            "sale_lowest_price": 4, #//当前出售的最低价格
-            "today_price": { #//当日最高，最低成交价格
-                "highest_price":12,
-                "lowest_price":6,
+        "stock_price": {
+            "current_price": 11.1,  # //实时价格
+            "latest_price": 10,  # //最新成交价格
+            "buy_highest_price": 12,  # //当前购买指令的最高价格
+            "sale_lowest_price": 4,  # //当前出售的最低价格
+            "today_price": {  # //当日最高，最低成交价格
+                "highest_price": 12,
+                "lowest_price": 6,
             },
-            "week_price": { #//本周最高，最低成交价格
-                "highest_price":13,
-                "lowest_price":4,
+            "week_price": {  # //本周最高，最低成交价格
+                "highest_price": 13,
+                "lowest_price": 4,
             },
-            "month_price": { #//本月最高，最低成交价格
-                "highest_price":21,
-                "lowest_price":1,
+            "month_price": {  # //本月最高，最低成交价格
+                "highest_price": 21,
+                "lowest_price": 1,
             },
-            "stock_info": "Test" #//股票的重要公告
+            "stock_info": "Test"  # //股票的重要公告
         }
     })
 
@@ -217,16 +219,16 @@ def test():
 def tran_state():
     import random
     return jsonify({
-        "state" : True if random.randint(1,2)%2 == 0 else False,
-        "msg" : "Test Message."
+        "state": True if random.randint(1, 2) % 2 == 0 else False,
+        "msg": "Test Message."
     })
 
 
 @app.route("/fund_account", methods=["POST"])
 def fun():
     return jsonify({
-        "fund"  : 1000,
-        "freeze_fund" : 0
+        "fund": 1000,
+        "freeze_fund": 0
     })
 
 
