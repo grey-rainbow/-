@@ -5,6 +5,11 @@ function time() {
     setTimeout(time, 1000);
 }
 
+function logout() {
+    sessionStorage.setItem("log_state", "");
+    sessionStorage.setItem("log_security_username", "");
+}
+
 function login() {
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
@@ -35,11 +40,6 @@ function login() {
             }
         }
     }
-}
-
-function logout() {
-    sessionStorage.setItem("log_state", "");
-    sessionStorage.setItem("log_security_username", "");
 }
 
 function  change() {

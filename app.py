@@ -43,6 +43,11 @@ def log_in():
     return render_template("log_in.html")
 
 
+@app.route("/change_password")
+def change_password():
+    return render_template("change_password.html")
+
+
 @app.route("/buy")
 def buy():
     return render_template("buy.html")
@@ -56,11 +61,6 @@ def sell():
 @app.route("/cancel")
 def cancel():
     return render_template("cancel.html")
-
-
-@app.route("/change_password")
-def change_password():
-    return render_template("change_password.html")
 
 
 @app.route("/stock_info")
@@ -92,10 +92,46 @@ def stock_query():
 
 
 @app.route("/account_user_login", methods=["POST"])
-def fund_acc():
-    return jsonify({
-        "state": True
-    })
+def login():
+    info = request.get_json()
+    if ( info.get("username") == info.get("password")):
+        return jsonify({
+            "state":"true",
+            "security_username":info.get("username")
+        })
+    else:
+        return jsonify({
+             "state":"false",
+             "security_username":""
+        })
+
+
+@app.route("/change_password", methods=["POST"])
+def changepswd():
+    info = request.get_json()
+    if ( info.get("username") != info.get("password") ):
+        return jsonify({
+            "state": "false",
+            "msg": "原密码不正确！"
+        })
+    else:
+        if ( info.get("password") == info.get("new_password") ):
+            return jsonify({
+                "state": "false",
+                "msg": "新密码不允许与原密码相同！"
+            })
+        else:
+            if( len(info.get("new_password")) < 6 ):
+                return jsonify({
+                    "state": "false",
+                    "msg": "新密码至少应包含6位字符！"
+                })
+            else:
+                return jsonify({
+                    "state": "true",
+                    "msg": "设置密码成功！"
+                })
+
 
 
 @app.route("/stock", methods=["POST", "GET"])
