@@ -263,8 +263,37 @@ def tran_state():
 @app.route("/fund_account", methods=["POST"])
 def fun():
     return jsonify({
+        "state": "true",
+        "msg": "okay.",
         "fund": 1000,
         "freeze_fund": 0
+    })
+
+
+@app.route("/security_account", methods=["POST"])
+def sec_account():
+    return jsonify({
+        "state": "true",
+        "msg": "okay.",
+        "stock": [{
+            "name": "my_stock1",
+            "num": 100,
+            "price": "10.0",
+            "cost": "5.0",
+            "profit": "5.0"
+        }, {
+            "name": "my_stock2",
+            "num": 200,
+            "price": "8.0",
+            "cost": "2.3",
+            "profit": "5.7"
+        }, {
+            "name": "my_stock3",
+            "num": 300,
+            "price": "7.0",
+            "cost": "2.5",
+            "profit": "5.5"
+        }]
     })
 
 

@@ -200,6 +200,9 @@
     let add_info = function () {
         let stock_id = $('#add_info input')[0].value;
         let stock_price = $('#add_info input')[1].value;
+        if (stock_id === "" || stock_price === "") {
+            return;
+        }
         if (advance_info.check_list.findIndex(element => JSON.stringify(element) === JSON.stringify({stock_id, stock_price, info_type})) < 0) {
             advance_info.check_list.push({stock_id, stock_price, info_type});
             Info.set_localStorage("check_list", advance_info.check_list);

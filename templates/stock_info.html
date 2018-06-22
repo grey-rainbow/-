@@ -177,6 +177,7 @@
                 var temp = JSON.parse( xmlhttp.responseText );
                 var div = $('#personal_stock_info');
                 var tmp = '<div style="font-size:20px">\n<span class="glyphicon glyphicon-user"></span>账户股票信息\n            </div>';
+                tmp += `<br/><strong>用户名： {0}</strong><br/>`.replace('{0}', get_current_username());
                 if(temp.state == 'false') {
                     alert(temp.msg);
                     tmp += '<br/><strong>账户信息加载失败，请重试。</strong>';
