@@ -4,7 +4,7 @@ from flask import url_for
 from flask import send_file
 from flask import request, jsonify
 import time
-
+import random
 app = Flask(__name__)
 
 
@@ -79,9 +79,8 @@ def fund_info():
 @app.route("/trade_shares", methods=["POST"])
 def trade():
     data = request.form.to_dict()
-    print(data)
     return jsonify({
-        "state": True,
+        "state": "true",
         "transaction_id": "test_transaction_id"
     })
 
@@ -191,7 +190,7 @@ def stock():
 @app.route("/all_transaction")
 def all():
     return jsonify({
-        "state": True,
+        "state": "true",
         "message": "",
         "data": {
             "test_tran_id_1": {
@@ -253,9 +252,8 @@ def test():
 
 @app.route("/transaction_state", methods=["POST"])
 def tran_state():
-    import random
     return jsonify({
-        "state": True if random.randint(1, 2) % 2 == 0 else False,
+        "state": "true" if random.randint(1, 2) % 2 == 0 else "false",
         "msg": "Test Message."
     })
 
@@ -263,7 +261,7 @@ def tran_state():
 @app.route("/fund_account", methods=["POST"])
 def fun():
     return jsonify({
-        "state": "true",
+        "state": "true" if random.randint(1, 2) % 2 == 0 else "false",
         "msg": "okay.",
         "fund": 1000,
         "freeze_fund": 0

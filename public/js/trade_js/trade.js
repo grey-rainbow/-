@@ -4,7 +4,7 @@ global_vars = {
 
 function render_account_info(data){
     var div = $("#account_info");
-    if (data.state == false){
+    if (data.state == "false"){
         var tmp = `
             <strong>账户信息加载失败，请重试。</strong>
         `;
@@ -109,7 +109,7 @@ function check_confirm_form(){
                 password : $("#fund_psd").val()
             }
             $.post("/account_user_login", send_data, function(data){
-                if (data.state == true){
+                if (data.state == "true"){
                     send_trade($("#trade_form"));
                 }
                 else{
@@ -132,7 +132,7 @@ function send_trade(form){
     };
     
     $.post("/trade_shares", send_data, function(data){
-        if (data.state == true){
+        if (data.state == "true"){
             $("#msg_slot").html(create_success_alert(
                 "交易指令发布成功!<strong>该笔交易的交易号为：{}</strong>".replace("{}", data.transaction_id)
             ));
@@ -170,7 +170,7 @@ function create_error_alert(msg) {
 
 function load_transactions(){
     $.get("/all_transaction", function(data){
-        if (data.state == true)
+        if (data.state == "true")
             render_transaction(data);
         else{
             $("#msg_slot").html(create_error_alert(data.message));
@@ -232,7 +232,7 @@ function send_cancel(){
         //2 means cancel
     }
     $.post("/transaction_state", send_data, function(data){
-        if (data.state == false){
+        if (data.state == "false"){
             $("#msg_slot").html(create_error_alert(data.msg));
         }else{
             $("#msg_slot").html(create_success_alert("交易撤销成功！"));
@@ -265,7 +265,7 @@ function check_confirm_cancel(){
                 password : $("#fund_psd").val()
             }
             $.post("/account_user_login", send_data, function(data){
-                if (data.state == true){
+                if (data.state == "true"){
                    send_cancel();
                 }
                 else{
