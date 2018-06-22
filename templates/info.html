@@ -219,7 +219,9 @@
         let stock = delete_element.getAttribute('id').split("_");
 
         advance_info.check_list = advance_info.check_list.filter(x =>
-            ! (x.stock_id === stock[0] && x.stock_price === stock[1] && x.info_type === stock[2]));
+            !(x.stock_id.toString() === stock[0] &&
+                x.stock_price.toString() === stock[1] &&
+                x.info_type.toString() === stock[2]));
         Info.set_localStorage("check_list", advance_info.check_list);
 
         e.parentNode.parentNode.remove();
