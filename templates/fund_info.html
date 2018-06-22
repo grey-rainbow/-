@@ -7,8 +7,10 @@
     <script src={{url_for('modules', filename='jquery-3.1.1.min.js')}}></script>
     <script src={{url_for('modules', filename='bootstrap.min.js')}}></script>
     <script src={{url_for('modules', filename='jquery.validate.min.js')}}></script>
-    <script src={{url_for('modules', filename='js-cookie.js') }}></script>
-    <script src={{url_for('public', filename='js/info_js/info.js') }}></script>
+    <script src={{ url_for('modules', filename='js-cookie.js') }}></script>
+    <script src={{ url_for('public', filename='js/info_js/info.js') }}></script>
+    <script scr={{ url_for('public', filename='js/person_info_js/fund_info.js') }}></script>
+    <script src={{url_for('public', filename="js/trade_js/util.js")}}></script>
 
     <script>
         function time() {
@@ -18,11 +20,7 @@
             setTimeout(time, 1000);
         }
     </script>
-    <script>
-        $(document).ready(function(){
-            render_stock_info()
-        });
-    </script>
+
     <link rel="stylesheet" href={{url_for('public', filename='css/index.css')}}>
  <!--   <link rel="stylesheet" type="text/css" href={{url_for('public', filename="trade.css")}}>-->
 
@@ -89,6 +87,7 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a href="#">个人信息</a></li>
                                 <li><a href="change_password">修改密码</a></li>
                                 <li><a href="log_in">登出</a></li>
                             </ul>
@@ -106,23 +105,11 @@
 
             </div>
 
-            <!--这是股票信息加载的内容-->
-            <div class="stock-info" id="stock_info">
-                <div style="font-size:20px">
-                    <span class="glyphicon glyphicon-user"></span>账户资金信息
-                </div>
-                <table class="table">
-                    <tr><td><label>可用资金：</label></td><td><strong>1000   $</strong></td><tr>
-                    <tr><td><label>冻结资金：</label></td><td><strong>100    $</strong></td><tr>
-                    <tr><td></td><td></td></tr>
-                    <table>
-                        <p>资金显示并非实时刷新。</p>
+            <!--这是资金信息加载的内容-->
+            <div class="col-sm-11 account-info" id="personal_fund_info">
+
 
             </div>
-
-            <!--<div class="account-info" id="account_info">-->
-
-            <!--</div>-->
 
         </div>
     </div>
@@ -169,7 +156,44 @@
         });
         let advance_info = new Info();
         advance_info.interval_check();
+        show_personal_fund();
     });
+
+    function show_personal_fund() {
+        info  = {'username': get_current_username()};
+        text = JSON.stringify(info);
+
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST","/fund_account",true);
+        xmlhttp.setRequestHeader("Content-type","application/json");
+        xmlhttp.send(text);
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                var temp = JSON.parse( xmlhttp.responseText );
+                var div = $('#personal_fund_info');
+                var tmp = `
+                        <div style="font-size:20px">
+                            <span class="glyphicon glyphicon-user"></span>账户资金信息
+                        </div><br/><strong>\t用户名：{0}</strong><br/><br/>`.replace('{0}', get_current_username());
+                if(temp.state == "false") {
+                    alert(temp.msg);
+                    tmp += '<strong>账户信息加载失败，请重试。</strong>';
+                }
+                else {
+                    tmp += `
+                <table class="table">
+                    <tr><td><label>可用资金：</label></td><td><strong>{0}</strong></td><tr>
+                    <tr><td><label>冻结资金：</label></td><td><strong>{1}</strong></td><tr>
+                    <tr><td></td><td></td></tr>
+                    <table>
+                        <p>资金显示并非实时刷新。</p>
+                        `.replace('{0}', temp.fund).replace('{1}', temp.freeze_fund);
+                }
+                div.html(tmp);
+            }
+        }
+    }
 
 </script>
 </body>
