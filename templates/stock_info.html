@@ -177,11 +177,14 @@
                 var temp = JSON.parse( xmlhttp.responseText );
                 var div = $('#personal_stock_info');
                 var tmp = '<div style="font-size:20px">\n<span class="glyphicon glyphicon-user"></span>账户股票信息\n            </div>';
-                tmp += `<br/><strong>用户名： {0}</strong><br/>`.replace('{0}', get_current_username());
+                tmp += `<br/><strong>用户名： {}</strong><br/>`.replace('{}', get_current_username());
                 if(temp.state == 'false') {
                     alert(temp.msg);
                     tmp += '<br/><strong>账户信息加载失败，请重试。</strong>';
-                } else {
+                } else if(temp.stock.length == 1 && temp.stock[0].name == undefined)
+                    tmp += '<br/><strong>您的账户下尚无股票，快去买一支吧！</strong>';
+                else {
+                    tmp += `<br/><strong>您的账户下有{}支股票：</strong><br/>`.replace('{}', temp.stock.length);
                     for(i in temp.stock) {
                         tmp += `<br/>
                         <table class="table">
@@ -191,12 +194,11 @@
                             <tr><td><label>每股持有成本：</label></td><td><strong>{3}</strong></td><tr>
                             <tr><td><label>每股持有损益：</label></td><td><strong>{4}</strong></td><tr>
                             <tr><td></td><td></td></tr>
-                        </table>
-                        `.replace('{0}', temp.stock[i].name)
-                        .replace('{1}', temp.stock[i].num)
-                        .replace('{2}', temp.stock[i].price)
-                        .replace('{3}', temp.stock[i].cost)
-                        .replace('{4}', temp.stock[i].profit);
+                        </table>`                            .replace('{0}', temp.stock[i].name)
+                            .replace('{1}', temp.stock[i].num)
+                            .replace('{2}', temp.stock[i].price)
+                            .replace('{3}', temp.stock[i].cost)
+                            .replace('{4}', temp.stock[i].profit);
                     }
                     tmp += '<p>资金显示并非实时刷新。</p>';
                 }
