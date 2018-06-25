@@ -2,7 +2,7 @@ from flask import Flask
 from flask import render_template
 from flask import url_for
 from flask import send_file
-from flask import request, jsonify
+from flask import request, jsonify, session
 import time
 import random
 app = Flask(__name__)
@@ -10,7 +10,10 @@ app = Flask(__name__)
 
 @app.route('/index')
 def index():
-    return render_template("index.html")
+#    if not session.get('userid'):
+#        return render_template("log_in.html")
+ #   else:
+        return render_template("index.html")
 
 
 @app.route('/image/<path:filename>')
@@ -35,7 +38,10 @@ def fonts(filename):
 
 @app.route('/info')
 def info():
-    return render_template("info.html")
+#    if not session.get('userid'):
+ #       return render_template("log_in.html")
+ #   else:
+        return render_template("info.html")
 
 
 @app.route('/log_in')
@@ -45,33 +51,58 @@ def log_in():
 
 @app.route("/change_password")
 def change_password():
-    return render_template("change_password.html")
+ #   if not session.get('userid'):
+  #     return render_template("log_in.html")
+   # else:
+        return render_template("change_password.html")
 
 
 @app.route("/buy")
 def buy():
-    return render_template("buy.html")
+ #   if not session.get('userid'):
+  #     return render_template("log_in.html")
+   # else:
+        return render_template("buy.html")
 
 
 @app.route("/sell")
 def sell():
-    return render_template("sell.html")
+  #  if not session.get('userid'):
+   #    return render_template("log_in.html")
+  #  else:
+        return render_template("sell.html")
 
 
 @app.route("/cancel")
 def cancel():
-    return render_template("cancel.html")
+   # if not session.get('userid'):
+   #     return render_template("log_in.html")
+   # else:
+        return render_template("cancel.html")
 
 
 @app.route("/stock_info")
 def stock_info():
-    return render_template("stock_info.html")
+  #  if not session.get('userid'):
+   #     return render_template("log_in.html")
+   # else:
+        return render_template("stock_info.html")
 
 
 @app.route("/fund_info")
 def fund_info():
-    return render_template("fund_info.html")
+  #  if not session.get('userid'):
+  #      return render_template("log_in.html")
+  #  else:
+        return render_template("fund_info.html")
 
+
+@app.route("/stock_query", methods=['GET', 'POST'])
+def stock_query():
+   # if not session.get('userid'):
+   #     return render_template("log_in.html")
+   # else:
+        return render_template("stock_query.html")
 
 # for test
 
@@ -83,11 +114,6 @@ def trade():
         "state": "true",
         "transaction_id": "test_transaction_id"
     })
-
-
-@app.route("/stock_query", methods=['GET', 'POST'])
-def stock_query():
-    return render_template("stock_query.html")
 
 
 @app.route("/account_user_login", methods=["POST"])

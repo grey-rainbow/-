@@ -178,78 +178,76 @@
 </div>
 
 <script>
+var advance_info = new Info();
 
-    let advance_info = new Info();
+var info_type = -1;
 
-    let info_type = -1;
-
-    let setType = function (e) {
-        console.log(e.innerText);
-        let operate_node = e.parentNode.parentNode.parentNode;
-        operate_node = operate_node.getElementsByTagName('button')[0];
-        if (e.innerText === "高于价格提醒") {
-            info_type = 1;
-            operate_node.innerText = "高于价格提醒";
-        }
-        if (e.innerText === "低于价格提醒") {
-            info_type = -1;
-            operate_node.innerText = "低于价格提醒";
-        }
-    };
-    //add
-    let add_info = function () {
-        let stock_id = $('#add_info input')[0].value;
-        let stock_price = $('#add_info input')[1].value;
-        if (stock_id === "" || stock_price === "") {
-            return;
-        }
-        if (advance_info.check_list.findIndex(element => JSON.stringify(element) === JSON.stringify({stock_id, stock_price, info_type})) < 0) {
-            advance_info.check_list.push({stock_id, stock_price, info_type});
-            Info.set_localStorage("check_list", advance_info.check_list);
-
-            let new_node = document.createElement('div');
-            new_node.setAttribute('class', 'row');
-            new_node.setAttribute('id', `${stock_id}_${stock_price}_${info_type}`);
-            new_node.innerHTML = `<div class="col-lg-4 col-lg-offset-1 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_id">股票代码</span><input type="text" class="form-control" disabled placeholder=${stock_id}></div></div><div class="col-lg-4 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_price">提醒价格</span><input type="text" class="form-control" disabled placeholder=${stock_price}><span class="input-group-addon" id="info_stock_type">${info_type === 1 ? "高于价格提醒" : "低于价格提醒"}</span></div></div><div class="col-lg-1"><button type="button" class="btn btn-default" onclick="delete_info(event.target)">撤销提醒</button></div>`;
-
-            $('#show_info')[0].appendChild(new_node);
-
-        }
-    };
-    //delete
-    let delete_info = function (e) {
-        let delete_element = e.parentNode.parentNode;
-        let stock = delete_element.getAttribute('id').split("_");
-
-        advance_info.check_list = advance_info.check_list.filter(x =>
-            !(x.stock_id.toString() === stock[0] &&
-                x.stock_price.toString() === stock[1] &&
-                x.info_type.toString() === stock[2]));
+var setType = function setType(e) {
+    console.log(e.innerText);
+    var operate_node = e.parentNode.parentNode.parentNode;
+    operate_node = operate_node.getElementsByTagName('button')[0];
+    if (e.innerText === "高于价格提醒") {
+        info_type = 1;
+        operate_node.innerText = "高于价格提醒";
+    }
+    if (e.innerText === "低于价格提醒") {
+        info_type = -1;
+        operate_node.innerText = "低于价格提醒";
+    }
+};
+//add
+var add_info = function add_info() {
+    var stock_id = $('#add_info input')[0].value;
+    var stock_price = $('#add_info input')[1].value;
+    if (stock_id === "" || stock_price === "") {
+        return;
+    }
+    if (advance_info.check_list.findIndex(function (element) {
+        return JSON.stringify(element) === JSON.stringify({ stock_id: stock_id, stock_price: stock_price, info_type: info_type });
+    }) < 0) {
+        advance_info.check_list.push({ stock_id: stock_id, stock_price: stock_price, info_type: info_type });
         Info.set_localStorage("check_list", advance_info.check_list);
 
-        e.parentNode.parentNode.remove();
-    };
+        var new_node = document.createElement('div');
+        new_node.setAttribute('class', 'row');
+        new_node.setAttribute('id', stock_id + "_" + stock_price + "_" + info_type);
+        new_node.innerHTML = "<div class=\"col-lg-4 col-lg-offset-1 col-xs-6\"><div class=\"input-group\"><span class=\"input-group-addon\" id=\"info_stock_id\">\u80A1\u7968\u4EE3\u7801</span><input type=\"text\" class=\"form-control\" disabled placeholder=" + stock_id + "></div></div><div class=\"col-lg-4 col-xs-6\"><div class=\"input-group\"><span class=\"input-group-addon\" id=\"info_stock_price\">\u63D0\u9192\u4EF7\u683C</span><input type=\"text\" class=\"form-control\" disabled placeholder=" + stock_price + "><span class=\"input-group-addon\" id=\"info_stock_type\">" + (info_type === 1 ? "高于价格提醒" : "低于价格提醒") + "</span></div></div><div class=\"col-lg-1\"><button type=\"button\" class=\"btn btn-default\" onclick=\"delete_info(event.target)\">\u64A4\u9500\u63D0\u9192</button></div>";
 
-    let pre_info = function() {
-        Info.get_localStorage("check_list").map((stock) => {
-            let new_node = document.createElement('div');
-            new_node.setAttribute('class', 'row');
-            new_node.setAttribute('id', `${stock.stock_id}_${stock.stock_price}_${stock.info_type}`);
-            new_node.innerHTML = `<div class="col-lg-4 col-lg-offset-1 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_id">股票代码</span><input type="text" class="form-control" disabled placeholder=${stock.stock_id}></div></div><div class="col-lg-4 col-xs-6"><div class="input-group"><span class="input-group-addon" id="info_stock_price">提醒价格</span><input type="text" class="form-control" disabled placeholder=${stock.stock_price}><span class="input-group-addon" id="info_stock_type">${info_type === 1 ? "高于价格提醒" : "低于价格提醒"}</span></div></div><div class="col-lg-1"><button type="button" class="btn btn-default" onclick="delete_info(event.target)">撤销提醒</button></div>`;
+        $('#show_info')[0].appendChild(new_node);
+    }
+};
+//delete
+var delete_info = function delete_info(e) {
+    var delete_element = e.parentNode.parentNode;
+    var stock = delete_element.getAttribute('id').split("_");
 
-            $('#show_info')[0].appendChild(new_node);
-        })
-    };
-
-    $(document).ready(function () {
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-            $(this).toggleClass('active');
-        });
-        pre_info();
-        advance_info.interval_check();
+    advance_info.check_list = advance_info.check_list.filter(function (x) {
+        return !(x.stock_id.toString() === stock[0] && x.stock_price.toString() === stock[1] && x.info_type.toString() === stock[2]);
     });
+    Info.set_localStorage("check_list", advance_info.check_list);
 
+    e.parentNode.parentNode.remove();
+};
+
+var pre_info = function pre_info() {
+    Info.get_localStorage("check_list").map(function (stock) {
+        var new_node = document.createElement('div');
+        new_node.setAttribute('class', 'row');
+        new_node.setAttribute('id', stock.stock_id + "_" + stock.stock_price + "_" + stock.info_type);
+        new_node.innerHTML = "<div class=\"col-lg-4 col-lg-offset-1 col-xs-6\"><div class=\"input-group\"><span class=\"input-group-addon\" id=\"info_stock_id\">\u80A1\u7968\u4EE3\u7801</span><input type=\"text\" class=\"form-control\" disabled placeholder=" + stock.stock_id + "></div></div><div class=\"col-lg-4 col-xs-6\"><div class=\"input-group\"><span class=\"input-group-addon\" id=\"info_stock_price\">\u63D0\u9192\u4EF7\u683C</span><input type=\"text\" class=\"form-control\" disabled placeholder=" + stock.stock_price + "><span class=\"input-group-addon\" id=\"info_stock_type\">" + (info_type === 1 ? "高于价格提醒" : "低于价格提醒") + "</span></div></div><div class=\"col-lg-1\"><button type=\"button\" class=\"btn btn-default\" onclick=\"delete_info(event.target)\">\u64A4\u9500\u63D0\u9192</button></div>";
+
+        $('#show_info')[0].appendChild(new_node);
+    });
+};
+
+$(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+        $(this).toggleClass('active');
+    });
+    pre_info();
+    advance_info.interval_check();
+});
 </script>
 
 </body>

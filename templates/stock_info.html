@@ -153,60 +153,46 @@
 
 
 <script>
-    $(document).ready(function () {
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-            $(this).toggleClass('active');
-        });
-        let advance_info = new Info();
-        advance_info.interval_check();
-        show_personal_stock();
+
+$(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+        $(this).toggleClass('active');
     });
+    advance_info = new Info();
+    advance_info.interval_check();
+    show_personal_stock();
+});
 
-    function show_personal_stock() {
-        info  = {'username': get_current_username()};
-        text = JSON.stringify(info);
+function show_personal_stock() {
+    info = { 'username': get_current_username() };
+    text = JSON.stringify(info);
 
-        xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("POST","/security_account",true);
-        xmlhttp.setRequestHeader("Content-type","application/json");
-        xmlhttp.send(text);
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "/security_account", true);
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    xmlhttp.send(text);
 
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                var temp = JSON.parse( xmlhttp.responseText );
-                var div = $('#personal_stock_info');
-                var tmp = '<div style="font-size:20px">\n<span class="glyphicon glyphicon-user"></span>账户股票信息\n            </div>';
-                tmp += `<br/><strong>用户名： {}</strong><br/>`.replace('{}', get_current_username());
-                if(temp.state == 'false') {
-                    alert(temp.msg);
-                    tmp += '<br/><strong>账户信息加载失败，请重试。</strong>';
-                } else if(temp.stock.length == 1 && temp.stock[0].name == undefined)
-                    tmp += '<br/><strong>您的账户下尚无股票，快去买一支吧！</strong>';
-                else {
-                    tmp += `<br/><strong>您的账户下有{}支股票：</strong><br/>`.replace('{}', temp.stock.length);
-                    for(i in temp.stock) {
-                        tmp += `<br/>
-                        <table class="table">
-                            <tr><td><label>股票名称：</label></td><td><strong>{0}</strong></td><tr>
-                            <tr><td><label>持有数量：</label></td><td><strong>{1}</strong></td><tr>
-                            <tr><td><label>当前价格：</label></td><td><strong>{2}</strong></td><tr>
-                            <tr><td><label>每股持有成本：</label></td><td><strong>{3}</strong></td><tr>
-                            <tr><td><label>每股持有损益：</label></td><td><strong>{4}</strong></td><tr>
-                            <tr><td></td><td></td></tr>
-                        </table>`                            .replace('{0}', temp.stock[i].name)
-                            .replace('{1}', temp.stock[i].num)
-                            .replace('{2}', temp.stock[i].price)
-                            .replace('{3}', temp.stock[i].cost)
-                            .replace('{4}', temp.stock[i].profit);
-                    }
-                    tmp += '<p>资金显示并非实时刷新。</p>';
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            var temp = JSON.parse(xmlhttp.responseText);
+            var div = $('#personal_stock_info');
+            var tmp = '<div style="font-size:20px">\n<span class="glyphicon glyphicon-user"></span>账户股票信息\n            </div>';
+            tmp += '<br/><strong>\u7528\u6237\u540D\uFF1A {}</strong><br/>'.replace('{}', get_current_username());
+            if (temp.state == 'false') {
+                alert(temp.msg);
+                tmp += '<br/><strong>账户信息加载失败，请重试。</strong>';
+            } else if (temp.stock.length == 1 && temp.stock[0].name == undefined) tmp += '<br/><strong>您的账户下尚无股票，快去买一支吧！</strong>';else {
+                tmp += '<br/><strong>\u60A8\u7684\u8D26\u6237\u4E0B\u6709{}\u652F\u80A1\u7968\uFF1A</strong><br/>'.replace('{}', temp.stock.length);
+                for (i in temp.stock) {
+                    tmp += '<br/>\n                        <table class="table">\n                            <tr><td><label>\u80A1\u7968\u540D\u79F0\uFF1A</label></td><td><strong>{0}</strong></td><tr>\n                            <tr><td><label>\u6301\u6709\u6570\u91CF\uFF1A</label></td><td><strong>{1}</strong></td><tr>\n                            <tr><td><label>\u5F53\u524D\u4EF7\u683C\uFF1A</label></td><td><strong>{2}</strong></td><tr>\n                            <tr><td><label>\u6BCF\u80A1\u6301\u6709\u6210\u672C\uFF1A</label></td><td><strong>{3}</strong></td><tr>\n                            <tr><td><label>\u6BCF\u80A1\u6301\u6709\u635F\u76CA\uFF1A</label></td><td><strong>{4}</strong></td><tr>\n                            <tr><td></td><td></td></tr>\n                        </table>'.replace('{0}', temp.stock[i].name).replace('{1}', temp.stock[i].num).replace('{2}', temp.stock[i].price).replace('{3}', temp.stock[i].cost).replace('{4}', temp.stock[i].profit);
                 }
-                div.html(tmp);
+                tmp += '<p>资金显示并非实时刷新。</p>';
             }
+            div.html(tmp);
         }
-    }
-
+    };
+}
 </script>
 </body>
 </html>

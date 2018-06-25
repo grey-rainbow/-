@@ -149,52 +149,40 @@
 
 
 <script>
-    $(document).ready(function () {
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-            $(this).toggleClass('active');
-        });
-        let advance_info = new Info();
-        advance_info.interval_check();
-        show_personal_fund();
+$(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+        $(this).toggleClass('active');
     });
+    advance_info = new Info();
+    advance_info.interval_check();
+    show_personal_fund();
+});
 
-    function show_personal_fund() {
-        info  = {'username': get_current_username()};
-        text = JSON.stringify(info);
+function show_personal_fund() {
+    info = { 'username': get_current_username() };
+    text = JSON.stringify(info);
 
-        xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("POST","/fund_account",true);
-        xmlhttp.setRequestHeader("Content-type","application/json");
-        xmlhttp.send(text);
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "/fund_account", true);
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    xmlhttp.send(text);
 
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                var temp = JSON.parse( xmlhttp.responseText );
-                var div = $('#personal_fund_info');
-                var tmp = `
-                        <div style="font-size:20px">
-                            <span class="glyphicon glyphicon-user"></span>账户资金信息
-                        </div><br/><strong>\t用户名：{0}</strong><br/><br/>`.replace('{0}', get_current_username());
-                if(temp.state == "false") {
-                    alert(temp.msg);
-                    tmp += '<strong>账户信息加载失败，请重试。</strong>';
-                }
-                else {
-                    tmp += `
-                <table class="table">
-                    <tr><td><label>可用资金：</label></td><td><strong>{0}</strong></td><tr>
-                    <tr><td><label>冻结资金：</label></td><td><strong>{1}</strong></td><tr>
-                    <tr><td></td><td></td></tr>
-                    <table>
-                        <p>资金显示并非实时刷新。</p>
-                        `.replace('{0}', temp.fund).replace('{1}', temp.freeze_fund);
-                }
-                div.html(tmp);
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            var temp = JSON.parse(xmlhttp.responseText);
+            var div = $('#personal_fund_info');
+            var tmp = '\n                        <div style="font-size:20px">\n                            <span class="glyphicon glyphicon-user"></span>\u8D26\u6237\u8D44\u91D1\u4FE1\u606F\n                        </div><br/><strong>\t\u7528\u6237\u540D\uFF1A{0}</strong><br/><br/>'.replace('{0}', get_current_username());
+            if (temp.state == "false") {
+                alert(temp.msg);
+                tmp += '<strong>账户信息加载失败，请重试。</strong>';
+            } else {
+                tmp += '\n                <table class="table">\n                    <tr><td><label>\u53EF\u7528\u8D44\u91D1\uFF1A</label></td><td><strong>{0}</strong></td><tr>\n                    <tr><td><label>\u51BB\u7ED3\u8D44\u91D1\uFF1A</label></td><td><strong>{1}</strong></td><tr>\n                    <tr><td></td><td></td></tr>\n                    <table>\n                        <p>\u8D44\u91D1\u663E\u793A\u5E76\u975E\u5B9E\u65F6\u5237\u65B0\u3002</p>\n                        '.replace('{0}', temp.fund).replace('{1}', temp.freeze_fund);
             }
+            div.html(tmp);
         }
-    }
-
+    };
+}
 </script>
 </body>
 </html>
