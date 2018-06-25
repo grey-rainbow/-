@@ -1,3 +1,3 @@
 function get_current_username(){
-    return "";
+    return sessionStorage.getItem("log_security_username");
 }
